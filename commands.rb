@@ -1,10 +1,8 @@
-require "pry"
-
 class Command
   attr_reader :extra
   
   def initialize(*args)
-    @extra = extra.pop
+    @extra = args.pop
   end
 end
 
@@ -41,34 +39,5 @@ class Report < Command
   end
 end
 
-class Interpreter
-  attr_reader :instrs, :cmds
-  
-  def initialize(fname)
-    @instrs = File.readlines(fname).map do |line|
-      line.split
-    end
-    build_cmds
-  end
 
-  def run
-    for cmd in @cmds
-      cmd.execute
-    end
-  end
 
-  private
-  def build_cmds
-    @cmds = []
-    for inst in @instrs
-      klass_name = inst[0].downcase.capitalize
-      klass = Object::const_get(klass_name)
-      extra = inst[1, inst.length-1]
-      binding.pry
-      @cmds.push(klass.new extra)
-    end
-  end
-end
-
-int = Interpreter.new "instructions.txt"
-int.run

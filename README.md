@@ -1,3 +1,6 @@
+## Environment
+ruby 2.2.0
+
 ## Tests
 run with `ruby -I'./' tests.py`
 

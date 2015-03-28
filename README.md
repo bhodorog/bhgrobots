@@ -5,6 +5,7 @@ run with `ruby -I'./' tests.py`
 ## Assumptions
 The following assumption regarding any future requirements have driven
 the design of this app:
+
 1. New commands will be added in the future
 1. Existing commands will change
 1. The limits of the table will change

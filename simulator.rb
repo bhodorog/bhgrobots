@@ -1,9 +1,11 @@
 require "commands"
+require "models"
 
 class Engine
   attr_reader :instrs, :cmds
   
   def initialize(fd)
+    @table = Table.new(Position.new(5, 5))
     @instrs = fd.readlines.map do |line|
       line.split
     end
@@ -12,7 +14,7 @@ class Engine
 
   def run
     @cmds.collect do |cmd|
-      cmd.execute
+      @table.accept(cmd)
     end
   end
 

@@ -21,3 +21,27 @@ HEREDOC
 end
 
 
+class TestPosition < Test::Unit::TestCase
+  def test_add
+    a = Position.new(1, 2)
+    b = Position.new(2, 1)
+    res = a + b
+    assert_equal(3, res.x)
+    assert_equal(3, res.y)
+  end
+end
+
+class TestLimits < Test::Unit::TestCase
+  def test_is_valid?
+    llim = Limits.new(Struct.new(:x, :y).new(5, 5))
+    assert(llim.is_valid?(Position.new(2, 2)))
+    assert(llim.is_valid?(Position.new(0, 5)))
+    assert(llim.is_valid?(Position.new(5, 0)))
+    assert(llim.is_valid?(Position.new(0, 0)))
+    assert(!llim.is_valid?(Position.new(6, 0)))
+    assert(!llim.is_valid?(Position.new(-1, 0)))
+    assert(!llim.is_valid?(Position.new(0, -1)))
+  end
+end
+
+

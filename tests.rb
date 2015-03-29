@@ -84,12 +84,19 @@ class TestCommands < Test::Unit::TestCase
     @tbl = Table.new(Size.new(5, 5))
   end
 
-  def test_place
+  def test_legal_place
     @tbl.accept(Place.new("1,1,S"))
     after = @tbl.accept(Status.new)
     assert_equal(1, after.x)
     assert_equal(1, after.y)
-    assert_equal(:SOUTH, after.h)
+    assert_equal(:S, after.h)
+  end
+
+  def test_illegal_place
+    before = @tbl.accept(Status.new)
+    @tbl.accept(Place.new("1,1,X"))
+    after = @tbl.accept(Status.new)
+    assert_equal(before, after)
   end
 
   def test_legal_move
@@ -102,17 +109,42 @@ class TestCommands < Test::Unit::TestCase
     assert_equal(before.h, after.h)
   end
 
+  def test_illegal_move
+    @tbl.accept(Place.new("0,1,W"))
+    before = @tbl.accept(Status.new)
+    illegal = Move.new
+    @tbl.accept(illegal)
+    after = @tbl.accept(Status.new)
+    assert_equal(before, after)
+  end
+
+  def test_rotate
+    before = @tbl.accept(Status.new)
+    @tbl.accept(Right.new)
+    after = @tbl.accept(Status.new)
+    assert_equal(before.pos, after.pos)
+    assert_equal(:E, after.h)
+    @tbl.accept(Right.new)
+    after = @tbl.accept(Status.new)
+    assert_equal(before.pos, after.pos)
+    assert_equal(:S, after.h)
+    @tbl.accept(Left.new)
+    after = @tbl.accept(Status.new)
+    assert_equal(before.pos, after.pos)
+    assert_equal(:E, after.h)
+  end
+
   def test_report
     rep = @tbl.accept(Report.new).split(",")
     assert_equal(3, rep.length)
     assert(rep[0..1].all? {|el| el.to_i.instance_of?(Fixnum)})
-    assert(["NORTH", "SOUTH", "WEST", "EAST"].include?(rep[2]))
+    assert(["N", "S", "W", "E"].include?(rep[2]))
   end
 
   def test_status
     st = @tbl.accept(Status.new)
     assert([st.x, st.y].all? {|el| el.instance_of?(Fixnum)})
-    assert([:NORTH, :SOUTH, :WEST, :EAST].include?(st.h))
+    assert([:N, :S, :W, :E].include?(st.h))
   end
 end
 

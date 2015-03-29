@@ -45,14 +45,22 @@ class Limits
 end
 
 class Stat
-  attr_reader :x, :y, :h
+  attr_reader :x, :y
+  attr_accessor :h
 
-  def initialize(x=0, y=0, h=:NORTH)
+  def initialize(x=0, y=0, h=:N)
     @x, @y, @h = x, y, h
   end
 
   def pos
     Position.new(x, y)
+  end
+
+  def ==(other)
+    if !other.instance_of?(Stat)
+      return false
+    end
+    x == other.x and y == other.y and h == other.h
   end
 end
 
@@ -61,7 +69,7 @@ class Table
   
   def initialize(size)
     @limits = Limits.new(size)
-    @crt_stat = Stat.new(0, 0, :NORTH)
+    @crt_stat = Stat.new(0, 0, :N)
   end
 
   def accept(cmd)
@@ -86,5 +94,9 @@ class Table
 
   def heading
     crt_stat.h
+  end
+
+  def heading=(h)
+    crt_stat.h = h
   end
 end

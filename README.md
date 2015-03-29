@@ -1,8 +1,13 @@
 ## Environment
 ruby 2.2.0
 
+## Run
+`cd <<location to simulator.py>>`
+`ruby -I. simulator.py`
+
 ## Tests
-run with `ruby -I'./' tests.py`
+`cd <<location to simulator.py>>`
+`ruby -I. tests.py`
 
 
 ## Assumptions

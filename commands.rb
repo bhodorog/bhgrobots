@@ -37,6 +37,10 @@ class Place < Command
     end
   end
 
+  def validate(tbl)
+    true
+  end
+
   private
   def massage_extra
     # kind of a hack needed to differentiate between reading from file or using

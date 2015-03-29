@@ -65,15 +65,13 @@ class Stat
 end
 
 class Table
-  attr_accessor :crt_stat
-  
-  def initialize(size)
+  def initialize(size, place=Stat.new(nil, nil, nil))
     @limits = Limits.new(size)
-    @crt_stat = Stat.new(0, 0, :N)
+    @crt_stat = place
   end
 
   def accept(cmd)
-    cmd.execute(self)
+    cmd.attempt(self)
   end
 
   def crt_stat=(s)
@@ -84,19 +82,19 @@ class Table
 
   def crt_pos=(pos)
     if @limits.is_valid?(pos)
-      @crt_stat = Stat.new(pos.x, pos.y, crt_stat.h)
+      @crt_stat = Stat.new(pos.x, pos.y, @crt_stat.h)
     end
   end
 
   def crt_pos
-    crt_stat.pos
+    @crt_stat.pos
   end
 
   def heading
-    crt_stat.h
+    @crt_stat.h
   end
 
   def heading=(h)
-    crt_stat.h = h
+    @crt_stat.h = h
   end
 end

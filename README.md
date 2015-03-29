@@ -31,7 +31,6 @@ the design of this app:
 
 1. (optional) Have some magic methods generated for Table class based command name to have the api nicer. Instead of tbl.accept(Command.new(args)) will be tabl.command(args)
 1. Have the main file use stdin and/or args to send a filename
-1. Scratch all commands before the first PLACE cmd
 1. Corner cases hunt
 1. Prepare input test files
 1. (optional) Have the cmds streamed instead of bulk processed

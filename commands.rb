@@ -4,6 +4,16 @@ class Command
   def initialize(*args)
     @extra = args.pop
   end
+
+  def attempt(tbl)
+    if validate(tbl)
+      execute(tbl)
+    end
+  end
+
+  def validate(tbl)
+    tbl.heading and tbl.crt_pos.x and tbl.crt_pos.y
+  end
 end
 
 @@HEADINGS_OLD = {
@@ -88,6 +98,7 @@ end
 class Report < Command
   def execute(tbl)
     stat = tbl.accept(Status.new)
+    p "#{stat.x},#{stat.y},#{stat.h}"
     "#{stat.x},#{stat.y},#{stat.h}"
   end
 end
@@ -95,6 +106,10 @@ end
 class Status < Command
   def execute(tbl)
     Stat.new(tbl.crt_pos.x, tbl.crt_pos.y, tbl.heading)
+  end
+
+  def validate(tbl)
+    true
   end
 end
 

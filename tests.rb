@@ -68,7 +68,7 @@ end
 
 class TestTable < Test::Unit::TestCase
   def setup
-    @tbl = Table.new(Size.new(5, 5))
+    @tbl = Table.new(Size.new(5, 5), Stat.new(0, 0, :N))
   end
 
   def test_drop_invalid_pos
@@ -81,7 +81,7 @@ end
 
 class TestCommands < Test::Unit::TestCase
   def setup
-    @tbl = Table.new(Size.new(5, 5))
+    @tbl = Table.new(Size.new(5, 5), Stat.new(0, 0, :N))
   end
 
   def test_legal_place
@@ -97,6 +97,28 @@ class TestCommands < Test::Unit::TestCase
     @tbl.accept(Place.new("1,1,X"))
     after = @tbl.accept(Status.new)
     assert_equal(before, after)
+  end
+
+  def tets_discards_until_place
+    before = @tbl.accept(Status.new)
+    @tbl.accept(Report.new)
+    after = @tbl.accept(Status.new)
+    assert_equal(after, before)
+    assert_nil(before)
+    before = after
+    @tbl.accept(Move.new)
+    after = @tbl.accept(Status.new)
+    assert_equal(after, before)
+    assert_nil(before)
+    before = after
+    @tbl.accept(Left.new)
+    after = @tbl.accept(Status.new)
+    assert_equal(after, before)
+    assert_nil(before)
+    before = after
+    @tbl.accept(Right.new)
+    after = @tbl.accept(Status.new)
+    assert_equal(after, before)
   end
 
   def test_legal_move
@@ -146,5 +168,18 @@ class TestCommands < Test::Unit::TestCase
     assert([st.x, st.y].all? {|el| el.instance_of?(Fixnum)})
     assert([:N, :S, :W, :E].include?(st.h))
   end
+
+  def test_nil_status
+    tbl = Table.new(Size.new(5, 5))
+    st = tbl.accept(Status.new)
+    assert(st)
+    assert_nil(st)
+  end
+    
+  private
+  def assert_nil(st)
+    assert(!st.x) and assert(!st.y) and assert(!st.h)
+  end
+
 end
 

@@ -31,5 +31,5 @@ class Engine
 end
 
 
-@eng = Engine.new File.new("instructions.txt")
-@eng.run
+# @eng = Engine.new File.new("instructions.txt")
+# @eng.run

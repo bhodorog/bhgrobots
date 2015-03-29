@@ -26,3 +26,7 @@ the design of this app:
    just accepts generic commands and calls their .execute method. It
    also passes self as an argument so that each command can do their
    magic.
+
+## Ideas
+
+1. Have some magic methods generated for Table class based command name to have the api nicer. Instead of tbl.accept(Command.new(args)) will be tabl.command(args)

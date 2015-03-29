@@ -34,5 +34,5 @@ the design of this app:
 1. Scratch all commands before the first PLACE cmd
 1. Corner cases hunt
 1. Prepare input test files
-1. Have the cmds streamed instead of bulk processed
-1. (optional) 
+1. (optional) Have the cmds streamed instead of bulk processed
+

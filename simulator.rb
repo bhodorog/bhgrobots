@@ -1,3 +1,4 @@
+require "stringio"
 require "commands"
 require "models"
 
@@ -30,6 +31,12 @@ class Engine
   end
 end
 
-
-@eng = Engine.new File.new("instructions.txt")
-@eng.run
+class Foo
+  def main
+    inp = StringIO.new
+    inp.puts(ARGF.read)
+    inp.seek(0)
+    @eng = Engine.new(inp)
+    @eng.run
+  end
+end

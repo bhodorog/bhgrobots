@@ -2,8 +2,8 @@
 ruby 2.2.0
 
 ## Run
-`cd <<location to simulator.py>>`
-`ruby -I. simulator.py`
+`cd <<location to main.py>>`
+`ruby -I. main.py < instructions.txt`
 
 ## Tests
 `cd <<location to simulator.py>>`

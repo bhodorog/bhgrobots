@@ -1,4 +1,8 @@
 class Command
+  def self.HEADINGS
+    [:N, :E, :S, :W]
+  end
+
   attr_reader :extra, :r_s, :r # r for result, r_s for result_string
   
   def initialize(*args)
@@ -11,7 +15,7 @@ class Command
     if validate(tbl)
       execute(tbl)
     else
-      @r_s = "Skipped"
+      @r_s = "[#{self.class.to_s.upcase}] skipped"
     end
     self
   end
@@ -20,15 +24,6 @@ class Command
     tbl.heading and tbl.crt_pos.x and tbl.crt_pos.y
   end
 end
-
-@@HEADINGS_OLD = {
-  "N"=> :NORTH,
-  "S"=> :SOUTH,
-  "W"=> :WEST,
-  "E"=> :EAST,
-}
-
-@@HEADINGS = [:N, :E, :S, :W]
 
 class Place < Command
   def initialize(*args)
@@ -40,7 +35,9 @@ class Place < Command
     if @valid
       tbl.crt_stat = Stat.new(@new_pos.x, @new_pos.y, @new_head)
       @r = tbl.crt_stat
-      @r_s = "#{self.class} to #{@r}"
+      @r_s = "#{self.class.to_s.upcase} to #{@r}"
+    else
+      @r_s = "invalid #{self.class.to_s.upcase} to #{@new_pos.x},#{@new_pos.y},#{@new_head}"
     end
   end
 
@@ -59,8 +56,8 @@ class Place < Command
     pos = extra_a[0...2].collect {|el| el.to_i}
     @new_pos = Position.new(*pos)
     head = extra_a[2].to_sym
-    head_idx = @@HEADINGS.index(head)
-    @new_head = @@HEADINGS[head_idx] if head_idx
+    head_idx = Command.HEADINGS.index(head)
+    @new_head = Command.HEADINGS[head_idx] if head_idx
     @valid = true unless !@new_head
   end
 end
@@ -81,17 +78,17 @@ class Move < Command
   def execute(tbl)
     tbl.crt_pos = tbl.crt_pos + @head2move[tbl.heading]
     @r = tbl.crt_pos
-    @r_s = "#{self.class} to #{tbl.crt_pos}"
+    @r_s = "#{self.class.to_s.upcase} to #{tbl.crt_pos}"
   end
 end
 
 
 class Rotate < Command
   def execute(tbl)
-    idx = @@HEADINGS.index(tbl.heading)
+    idx = Command.HEADINGS.index(tbl.heading)
     rotated_idx = (idx+@angle) % 4
-    tbl.heading = @@HEADINGS[rotated_idx]
-    @r_s = "#{self.class.superclass} to #{self.class}"
+    tbl.heading = Command.HEADINGS[rotated_idx]
+    @r_s = "#{self.class.superclass.to_s.downcase} to #{self.class.to_s.upcase}"
   end
 end
 

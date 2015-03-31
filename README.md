@@ -3,7 +3,8 @@ ruby 2.2.0
 
 ## Run
 `cd <<location to main.py>>`
-`ruby -I. main.py < instructions.txt`
+`ruby -I. main.py -i FILENAME [-f flt1,flt2,flt3]`
+flt can be one of Move,Place,Left,Right,Report,Object
 
 ## Tests
 `cd <<location to simulator.py>>`
@@ -37,6 +38,6 @@ the design of this app:
 1. (optional) Have some magic methods generated for Table class based command name to have the api nicer. Instead of tbl.accept(Command.new(args)) will be tabl.command(args)
 1. Corner cases hunt
 1. Prepare input test files
-1. (optional) Have the cmds streamed instead of bulk processed
+1. (optional) Have the cmds streamed instead of bulk processed to enable processing of  huge commands file
 1. (optional) Pack the app into a gem
 

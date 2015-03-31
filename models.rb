@@ -21,6 +21,10 @@ class Position
   def !=(other)
     not(self.==(other))
   end
+
+  def to_s
+    "#{x},#{y}"
+  end
 end
 
 class Limits
@@ -62,6 +66,10 @@ class Stat
     end
     x == other.x and y == other.y and h == other.h
   end
+
+  def to_s
+    "#{x},#{y},#{h}"
+  end
 end
 
 class Table
@@ -96,5 +104,9 @@ class Table
 
   def heading=(h)
     @crt_stat.h = h
+  end
+
+  def crt_stat
+    Stat.new(crt_pos.x, crt_pos.y, heading)
   end
 end

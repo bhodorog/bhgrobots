@@ -1,14 +1,19 @@
 class Command
-  attr_reader :extra
+  attr_reader :extra, :r_s, :r # r for result, r_s for result_string
   
   def initialize(*args)
     @extra = args.pop
+    @r = nil
+    @r_s = to_s
   end
 
   def attempt(tbl)
     if validate(tbl)
       execute(tbl)
+    else
+      @r_s = "Skipped"
     end
+    self
   end
 
   def validate(tbl)
@@ -34,6 +39,8 @@ class Place < Command
   def execute(tbl)
     if @valid
       tbl.crt_stat = Stat.new(@new_pos.x, @new_pos.y, @new_head)
+      @r = tbl.crt_stat
+      @r_s = "#{self.class} to #{@r}"
     end
   end
 
@@ -73,6 +80,8 @@ class Move < Command
   #silently doesn't do nothing when invalid move commands
   def execute(tbl)
     tbl.crt_pos = tbl.crt_pos + @head2move[tbl.heading]
+    @r = tbl.crt_pos
+    @r_s = "#{self.class} to #{tbl.crt_pos}"
   end
 end
 
@@ -82,6 +91,7 @@ class Rotate < Command
     idx = @@HEADINGS.index(tbl.heading)
     rotated_idx = (idx+@angle) % 4
     tbl.heading = @@HEADINGS[rotated_idx]
+    @r_s = "#{self.class.superclass} to #{self.class}"
   end
 end
 
@@ -102,14 +112,18 @@ end
 class Report < Command
   def execute(tbl)
     stat = tbl.accept(Status.new)
-    p "#{stat.x},#{stat.y},#{stat.h}"
-    "#{stat.x},#{stat.y},#{stat.h}"
+    @r_s = "#{stat.x},#{stat.y},#{stat.h}"
   end
 end
 
 class Status < Command
+  def attempt(tbl)
+    super(tbl)
+    @r
+  end
+
   def execute(tbl)
-    Stat.new(tbl.crt_pos.x, tbl.crt_pos.y, tbl.heading)
+    @r = tbl.crt_stat
   end
 
   def validate(tbl)

@@ -5,8 +5,9 @@ require "models"
 class Engine
   attr_reader :instrs, :cmds
   
-  def initialize(fd)
+  def initialize(fd, filter=[Report])
     @table = Table.new(Position.new(5, 5))
+    @filter = filter
     @instrs = fd.readlines.map do |line|
       line.split
     end
@@ -14,9 +15,14 @@ class Engine
   end
 
   def run
-    @cmds.collect do |cmd|
+    @res = @cmds.collect do |cmd|
       @table.accept(cmd)
     end
+    filter_cmds
+  end
+
+  def filter_cmds
+    @res.select{ |el| @filter.any?{|f| el.is_a?(f)}}.collect{ |el| el.r_s}
   end
 
   private
@@ -33,10 +39,5 @@ end
 
 class Foo
   def main
-    inp = StringIO.new
-    inp.puts(ARGF.read)
-    inp.seek(0)
-    @eng = Engine.new(inp)
-    @eng.run
   end
 end

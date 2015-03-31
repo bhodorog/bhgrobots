@@ -157,7 +157,8 @@ class TestCommands < Test::Unit::TestCase
   end
 
   def test_report
-    rep = @tbl.accept(Report.new).split(",")
+    rep = @tbl.accept(Report.new).r_s
+    rep = rep.split(",")
     assert_equal(3, rep.length)
     assert(rep[0..1].all? {|el| el.to_i.instance_of?(Fixnum)})
     assert(["N", "S", "W", "E"].include?(rep[2]))

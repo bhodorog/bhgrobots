@@ -6,6 +6,8 @@ ruby 2.2.0
 `ruby -I. main.py -i FILENAME [-f flt1,flt2,flt3]`
 flt can be one of Move,Place,Left,Right,Report,Object
 
+some basic validations are being in place
+
 ## Tests
 `cd <<location to simulator.py>>`
 `ruby -I. tests.py`

@@ -78,7 +78,7 @@ class Move < Command
   def execute(tbl)
     tbl.crt_pos = tbl.crt_pos + @head2move[tbl.heading]
     @r = tbl.crt_pos
-    @r_s = "#{self.class.to_s.upcase} to #{tbl.crt_pos}"
+    @r_s = "#{self.class.to_s.upcase} to #{tbl.crt_stat}"
   end
 end
 

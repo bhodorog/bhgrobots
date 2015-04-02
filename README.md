@@ -46,4 +46,4 @@ the design of this app:
 1. (optional) Have some magic methods generated for Table class based command name to have the api nicer. Instead of tbl.accept(Command.new(args)) will be tabl.command(args)
 1. (optional) Have the cmds streamed instead of bulk processed to enable processing of  huge commands file
 1. Have proper validation in place for reading an Instruction File
-
+1. Have the instruction files distributed as res files and have the user choose by cmd line which to execute.

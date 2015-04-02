@@ -47,3 +47,5 @@ the design of this app:
 1. (optional) Have the cmds streamed instead of bulk processed to enable processing of  huge commands file
 1. Have proper validation in place for reading an Instruction File
 1. Have the instruction files distributed as res files and have the user choose by cmd line which to execute.
+1. Add the project to travis
+1. (optional) Proper rdoc,ri would be nice

@@ -1,17 +1,23 @@
 ## Environment
 ruby 2.2.0
+rvm 1.26.10
+
+## Install
+
+`rake build`
+
+`gem install bhgrobots-*.gem`
 
 ## Run
-`cd <<location to main.py>>`
-`ruby -I. main.py -i FILENAME [-f flt1,flt2,flt3]`
-flt can be one of Move,Place,Left,Right,Report,Object
 
-some basic validations are being in place
+`bhgrobots FILENAME`
+FILENAME can be any valid instruction FILE (no proper validation yet inplace)
 
 ## Tests
-`cd <<location to simulator.py>>`
-`ruby -I. tests.py`
 
+`rake test`
+
+`rake test[test_file1,test_file2]`, where _test\_file*_ can be any valid unit test file from _test/cases/test*_
 
 ## Assumptions
 The following assumption regarding any future requirements have driven
@@ -39,5 +45,5 @@ the design of this app:
 
 1. (optional) Have some magic methods generated for Table class based command name to have the api nicer. Instead of tbl.accept(Command.new(args)) will be tabl.command(args)
 1. (optional) Have the cmds streamed instead of bulk processed to enable processing of  huge commands file
-1. (optional) Pack the app into a gem
+1. Have proper validation in place for reading an Instruction File
 

@@ -4,9 +4,8 @@ rvm 1.26.10
 
 ## Install
 
-`rake build`
+`rake install`
 
-`gem install bhgrobots-*.gem`
 
 ## Run
 
@@ -18,6 +17,8 @@ FILENAME can be any valid instruction FILE (no proper validation yet inplace)
 `rake test`
 
 `rake test[test_file1,test_file2]`, where _test\_file*_ can be any valid unit test file from _test/cases/test*_
+
+options to test/unit can be passed with `rake opts="......." test`
 
 ## Assumptions
 The following assumption regarding any future requirements have driven
@@ -47,5 +48,5 @@ the design of this app:
 1. (optional) Have the cmds streamed instead of bulk processed to enable processing of  huge commands file
 1. Have proper validation in place for reading an Instruction File
 1. Have the instruction files distributed as res files and have the user choose by cmd line which to execute.
-1. Add the project to travis
+1. (optional) Add the project to travis
 1. (optional) Proper rdoc,ri would be nice

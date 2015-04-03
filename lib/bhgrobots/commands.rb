@@ -19,13 +19,18 @@ module Bhgrobots
       if validate(tbl)
         execute(tbl)
       else
-        @r_s = "[#{self.class.to_s.upcase}] skipped"
+        @r_s = "#{pretty_name} skipped"
       end
       self
     end
 
     def validate(tbl)
       tbl.heading and tbl.crt_pos.x and tbl.crt_pos.y
+    end
+
+    protected
+    def pretty_name(cls=self.class)
+      cls.name.split("::")[-1].to_s.upcase
     end
   end
 
@@ -39,9 +44,9 @@ module Bhgrobots
       if @valid
         tbl.crt_stat = Stat.new(@new_pos.x, @new_pos.y, @new_head)
         @r = tbl.crt_stat
-        @r_s = "#{self.class.to_s.upcase} to #{@r}"
+        @r_s = "#{pretty_name} to #{@r}"
       else
-        @r_s = "invalid #{self.class.to_s.upcase} to #{@new_pos.x},#{@new_pos.y},#{@new_head}"
+        @r_s = "invalid #{pretty_name} to #{@new_pos.x},#{@new_pos.y},#{@new_head}"
       end
     end
 
@@ -57,7 +62,7 @@ module Bhgrobots
         @extra = @extra.pop
       end
       extra_a = @extra.split(",")
-      pos = extra_a[0...2].collect {|el| el.to_i}
+      pos = extra_a[0...2].map {|el| el.to_i}
       @new_pos = Position.new(*pos)
       head = extra_a[2].to_sym
       head_idx = Command::HEADINGS.index(head)
@@ -82,7 +87,7 @@ module Bhgrobots
     def execute(tbl)
       tbl.crt_pos = tbl.crt_pos + @head2move[tbl.heading]
       @r = tbl.crt_pos
-      @r_s = "#{self.class.to_s.upcase} to #{tbl.crt_stat}"
+      @r_s = "#{pretty_name} to #{tbl.crt_stat}"
     end
   end
 
@@ -92,7 +97,7 @@ module Bhgrobots
       idx = Command::HEADINGS.index(tbl.heading)
       rotated_idx = (idx+@angle) % 4
       tbl.heading = Command::HEADINGS[rotated_idx]
-      @r_s = "#{self.class.superclass.to_s.downcase} to #{self.class.to_s.upcase}"
+      @r_s = "#{pretty_name(self.class.superclass).downcase} to #{pretty_name}"
     end
   end
 

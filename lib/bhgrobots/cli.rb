@@ -20,23 +20,24 @@ module Bhgrobots
     public
     def parse_opts(opts)
       OptionParser.new do |opts|
-        # opts.on("-h", "--help", "Display this screen") do
-        #   p opts
-        # end
         opts.banner = @@Usage
-        # opts.on("-i", "--input FILE", "instructions file") do |f|
-        #   @options.input = f
-        # end
-        opts.on("-f", "--filter f1, f2, f3, ...", Array, "filter reports of the commands based on this option. You can pass a list of comma separated of the following Place|Move|Left|Right|[Report]|Status|Object") do |fs|
-          @options.filters = fs || options.filters
+        opts.on("-f", "--filter f1, f2, f3, ...", Array,
+                %{"filter reports of the commands based on this option. You can
+ pass a list of comma separated of the following Place|Move|Left|Right|[Report]|
+Status|Object"}.gsub("\n", "")) do |fs|
+          @options.filters = fs || @options.filters
+        end
+        opts.on("-h", "--help", "Display this screen") do
+          puts opts
+          exit
         end
       end.parse!(opts)
     end
 
     def validate_opts
       def _klassify_filters
-        fltrs = @options.filters.collect do |flt|
-          Bhgrobots::klassify([flt])
+        fltrs = @options.filters.map do |flt|
+          Bhgrobots::klassify(flt)
         end
       end
 
@@ -55,8 +56,12 @@ module Bhgrobots
     end
     
     def main
-      input = ARGV.shift
-      validate_filename(input)
+      if ARGV.empty? or ARGV.include?("-h") or ARGV.include?("--help")
+        ARGV << "-h"
+      else
+        input = ARGV.shift
+        validate_filename(input)
+      end
       parse_opts(ARGV)
       validate_opts
       @eng = Engine.new(File.new(input), @options.filters)

@@ -11,28 +11,27 @@ module Bhgrobots
     def initialize(fd, filter=[Report])
       @table = Table.new(Position.new(5, 5))
       @filter = filter
-      @instrs = fd.readlines.map do |line|
-        line.split
-      end
+      @instrs = fd.readlines.map {|l| l.strip}
       build_cmds
     end
 
     def run
-      @res = @cmds.collect do |cmd|
+      @res = @cmds.map do |cmd|
         @table.accept(cmd)
       end
       filter_cmds
     end
 
     def filter_cmds
-      @res.select{ |el| @filter.any?{|f| el.is_a?(f)}}.collect{ |el| el.r_s}
+      @res.select do |el|
+        @filter.any?{ |f| el.is_a?(f) }
+      end.map{ |el| el.r_s}
     end
 
     private
     def build_cmds
-      @cmds = []
-      for inst in @instrs
-        @cmds.push(Bhgrobots::build_cmd(inst))
+      @cmds = @instrs.map do |i|
+        Bhgrobots::build_cmd(i)
       end
     end
   end
